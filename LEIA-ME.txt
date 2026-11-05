@@ -1,0 +1,61 @@
+==============================================================================
+LUKE-GRABBER ⚡ — EXTRATOR & ARQUIVADOR MULTIMÍDIA UNIVERSAL
+Versão: 1.1.0
+Identidade Visual: Ecossistema Luke (Midnight Ocean & Electric Cyan)
+==============================================================================
+
+1. O QUE É O LUKE-GRABBER?
+------------------------------------------------------------------------------
+O Luke-Grabber é uma aplicação desktop independente e de código aberto para
+backup pessoal, arquivamento e preservação de mídias públicas da internet
+(vídeos, áudios e imagens em alta resolução).
+
+Diferente de sites de conversão online, ele funciona 100% no seu computador,
+sem telemetria, sem propagandas maliciosas e sem intermediários.
+
+
+2. COMO USAR
+------------------------------------------------------------------------------
+- Para executar: dê dois cliques no arquivo "iniciar.bat" (ou abra o executável).
+- Cole a URL da mídia que deseja arquivar na barra superior.
+- Escolha o formato desejado:
+  * Vídeo (MP4): Qualidade Original (4K / 1080p 60fps), 720p ou 480p.
+  * Áudio (MP3): 320 kbps com arte de capa, M4A ou WAV sem perdas.
+  * Imagem (Foto / Carrossel): Baixe fotos individuais ou carrosséis completos.
+- Clique em "BAIXAR AGORA". O arquivo será salvo diretamente na sua pasta Downloads.
+
+
+3. ATUALIZAÇÕES AUTOMÁTICAS
+------------------------------------------------------------------------------
+O Luke-Grabber conta com verificação integrada de atualizações na barra superior:
+- O botão "Atualizações" checa novas versões no GitHub.
+- Também permite atualizar o motor interno "yt-dlp" com 1 clique para manter
+  total compatibilidade com as constantes mudanças da internet.
+
+
+4. STATUS DE MENSAGEIROS (WHATSAPP)
+------------------------------------------------------------------------------
+Mensagens e status do WhatsApp são protegidos por criptografia de ponta a ponta
+privada e não possuem links públicos HTTP na internet.
+Para salvar status facilmente no computador, use o botão "WhatsApp Status" dentro
+do programa para obter o Favorito exclusivo "Luke-Status" do WhatsApp Web.
+
+
+==============================================================================
+5. AVISO LEGAL E TERMOS DE ISENÇÃO DE RESPONSABILIDADE (LEGAL DISCLAIMER)
+==============================================================================
+- FINALIDADE: Ferramenta utilitária de pesquisa e arquivamento de cópias de
+  segurança pessoal (backup privado), em consonância com o art. 46, inciso II
+  da Lei Federal de Direitos Autorais nº 9.610/1998 (cópia sem intuito de lucro).
+
+- NÃO BURLA PROTEÇÕES (SEM QUEBRA DE DRM): O software NÃO descriptografa e
+  NÃO quebra mecanismos de proteção DRM (Widevine, FairPlay, PlayReady). Apenas
+  grava fluxos públicos abertos transmitidos por protocolos convencionais da web.
+
+- SEM AFILIAÇÃO: Projeto independente sem nenhum vínculo, patrocínio ou endosso
+  de empresas ou plataformas web. Toda menção marcária atém-se aos limites da
+  interoperabilidade funcional descritiva (art. 132 da Lei Federal nº 9.279/1996).
+
+- RESPONSABILIDADE: O usuário é integral e exclusivamente responsável pela
+  observância das leis locais e termos de uso dos conteúdos acessados.
+==============================================================================

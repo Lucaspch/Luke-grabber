@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luke-Grabber — Extrator Multimídia Universal</title>
+    <link rel="icon" type="image/svg+xml" href="icon.svg" />
+    <!-- Google Fonts: Plus Jakarta Sans, JetBrains Mono & Material Symbols Rounded -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <!-- 1. CABEÇALHO UNIFICADO (IDV LUKE-SHARE) -->
+      <header class="app-header">
+        <div class="header-left">
+          <a href="#" class="brand-container" id="brand-logo" title="Luke-Grabber — Standalone Seguro">
+            <img src="logo.svg" alt="Luke" class="brand-logo-img" />
+            <div class="brand-title-group">
+              <span class="brand-title">GRABBER</span>
+              <div class="header-version-cluster">
+                <span class="version-pill" id="app-version">v1.1.0</span>
+                <button id="btn-check-updates" class="btn-check-update" title="Verificar atualizações">
+                  <span class="material-symbols-rounded ms-sm">sync</span>
+                  <span>Atualizações</span>
+                  <span id="update-badge" class="update-badge-dot hidden"></span>
+                </button>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="header-right">
+          <div class="status-badge" title="Operação 100% isolada e local. Sem envio de dados para servidores externos.">
+            <span class="status-dot"></span>
+            <span id="engine-status-text">Motor Local Pronto</span>
+          </div>
+
+          <button id="btn-open-downloads-dir" class="btn-header-folder" title="Abrir pasta onde os arquivos são salvos no Windows Explorer">
+            <span class="material-symbols-rounded ms-sm">folder_open</span>
+            <span>Downloads</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- 2. OMNIBAR DE ENTRADA DO LINK -->
+      <section class="omnibar-section">
+        <div class="omnibar-wrapper">
+          <span class="material-symbols-rounded omnibar-lead-icon ms-md">link</span>
+          <input
+            type="text"
+            id="url-input"
+            class="omnibar-input"
+            placeholder="Cole o link do vídeo, Reels ou post (YouTube, X, Insta) aqui..."
+            autocomplete="off"
+            spellcheck="false"
+          />
+
+          <div class="omnibar-actions">
+            <button id="btn-paste-clipboard" class="btn-paste-pill" type="button" title="Colar link da área de transferência">
+              <span class="material-symbols-rounded ms-xs">content_paste</span>
+              <span>Colar</span>
+            </button>
+
+            <button id="btn-fetch-info" class="btn-omnibar-enter" type="button" title="Analisar link">
+              <span class="material-symbols-rounded ms-sm">search</span>
+              <span>Analisar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Chips de Plataforma e Recursos -->
+        <div class="platform-chips-row">
+          <span>Suporte multimídia universal:</span>
+          <span class="platform-chip yt">
+            <span class="material-symbols-rounded ms-xs">smart_display</span>
+            YouTube (Vídeos & Shorts)
+          </span>
+          <span class="platform-chip x">
+            <span class="material-symbols-rounded ms-xs">chat</span>
+            X / Twitter
+          </span>
+          <span class="platform-chip ig">
+            <span class="material-symbols-rounded ms-xs">photo_camera</span>
+            Instagram (Reels & Fotos)
+          </span>
+          <button type="button" class="platform-chip wa" id="btn-open-wa-modal" title="Como salvar vídeos e fotos de Status do WhatsApp">
+            <span class="material-symbols-rounded ms-xs">forum</span>
+            <span>WhatsApp Status</span>
+            <span class="chip-badge-hot">DICA</span>
+          </button>
+          <span class="platform-chip">
+            <span class="material-symbols-rounded ms-xs">lock</span>
+            100% Local
+          </span>
+        </div>
+      </section>
+
+      <!-- 3. PALCO PRINCIPAL (STAGE CARD) -->
+      <main class="stage-card" id="main-stage">
+        <!-- ESTADO VAZIO (Nenhum link analisado ainda) -->
+        <div id="empty-state" class="empty-state">
+          <div class="empty-state-icon">
+            <span class="material-symbols-rounded ms-lg">cloud_download</span>
+          </div>
+          <h3>Nenhuma mídia selecionada</h3>
+          <p>
+            Cole o link de qualquer vídeo, publicação ou Reels acima para carregar as opções de extração em alta resolução (MP4), áudio direto (MP3) ou imagens originais (JPG).
+          </p>
+        </div>
+
+        <!-- ESTADO DE CARREGAMENTO / ANALISANDO -->
+        <div id="loading-state" class="empty-state hidden">
+          <div class="empty-state-icon">
+            <span class="material-symbols-rounded ms-lg" style="animation: spin 1.5s linear infinite;">sync</span>
+          </div>
+          <h3>Analisando fluxo de mídia...</h3>
+          <p>Extraindo formatos disponíveis, miniaturas e qualidade diretamente da fonte original.</p>
+        </div>
+
+        <!-- CARD DO VÍDEO/FOTO PRONTO PARA BAIXAR -->
+        <div id="video-stage" class="video-preview-layout hidden">
+          <!-- Coluna Esquerda: Miniatura e Badges -->
+          <div class="video-thumb-container">
+            <img id="video-thumbnail" src="" alt="Capa da Mídia" class="video-thumb-img" />
+            <div id="platform-badge" class="thumb-platform-badge">
+              <span class="material-symbols-rounded ms-xs" id="platform-icon">smart_display</span>
+              <span id="platform-name">YouTube</span>
+            </div>
+            <div id="duration-badge" class="thumb-duration-badge">00:00</div>
+            <div id="carousel-badge" class="thumb-carousel-badge hidden">
+              <span class="material-symbols-rounded ms-xs">collections</span>
+              <span id="carousel-badge-text">Carrossel</span>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Informações & Controles -->
+          <div class="video-details-column">
+            <div>
+              <h2 id="video-title" class="video-title">Título da Mídia</h2>
+              <div class="video-meta-row" style="margin-top: 8px;">
+                <div class="meta-item">
+                  <span class="material-symbols-rounded ms-xs">account_circle</span>
+                  <span id="video-uploader">Canal / Autor</span>
+                </div>
+                <div class="meta-item" id="meta-views-wrapper">
+                  <span class="material-symbols-rounded ms-xs">visibility</span>
+                  <span id="video-views">- visualizações</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Caixa de Configuração do Download -->
+            <div class="download-controls-box">
+              <div class="control-row">
+                <!-- Seletor de Tipo: Vídeo vs Áudio vs Imagem -->
+                <div class="format-type-tabs">
+                  <button type="button" class="format-tab-btn active" data-type="video" id="tab-video">
+                    <span class="material-symbols-rounded ms-xs">videocam</span>
+                    <span>Vídeo (MP4)</span>
+                  </button>
+                  <button type="button" class="format-tab-btn" data-type="audio" id="tab-audio">
+                    <span class="material-symbols-rounded ms-xs">music_note</span>
+                    <span>Áudio (MP3)</span>
+                  </button>
+                  <button type="button" class="format-tab-btn" data-type="image" id="tab-image">
+                    <span class="material-symbols-rounded ms-xs">image</span>
+                    <span>Imagem (Foto)</span>
+                  </button>
+                </div>
+
+                <!-- Seletor de Qualidade -->
+                <div class="quality-select-wrapper">
+                  <label for="quality-select">Qualidade:</label>
+                  <select id="quality-select" class="custom-select">
+                    <!-- Preenchido dinamicamente pelo JS -->
+                    <option value="best" selected>Melhor Disponível (Original)</option>
+                    <option value="1080">1080p FHD</option>
+                    <option value="720">720p HD</option>
+                    <option value="480">480p</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Toggles Opcionais -->
+              <div class="toggles-row">
+                <label class="checkbox-label" id="thumb-toggle-wrapper" title="Salva a capa do vídeo dentro das tags do arquivo">
+                  <input type="checkbox" id="chk-embed-thumb" checked />
+                  <span>Incorporar Capa / Miniatura</span>
+                </label>
+                <label class="checkbox-label" id="subs-toggle-wrapper" title="Embutir legendas se disponíveis">
+                  <input type="checkbox" id="chk-embed-subs" />
+                  <span>Embutir Legendas</span>
+                </label>
+              </div>
+
+              <!-- Linha da Pasta de Destino -->
+              <div class="destination-row">
+                <span class="material-symbols-rounded ms-sm" style="color: var(--accent-cyan);">folder</span>
+                <span class="destination-path-text" id="destination-path-display">C:\Users\...\Downloads\Luke-Grabber</span>
+                <button type="button" class="btn-change-folder" id="btn-change-folder" title="Escolher outra pasta para salvar">
+                  Alterar
+                </button>
+              </div>
+
+              <!-- Botão Principal de Download -->
+              <button type="button" id="btn-start-download" class="btn-download-hero">
+                <span class="material-symbols-rounded ms-md">download</span>
+                <span id="btn-start-download-text">BAIXAR AGORA</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD DE PROGRESSO ATIVO (Exibido durante o download) -->
+        <div id="active-download-card" class="active-download-card hidden">
+          <div class="progress-header">
+            <div class="progress-status-title">
+              <span class="material-symbols-rounded ms-sm" id="progress-spinner" style="animation: spin 1.5s linear infinite; color: var(--accent-cyan);">sync</span>
+              <span id="progress-status-text">Iniciando download...</span>
+            </div>
+            <span class="progress-percentage" id="progress-percentage">0%</span>
+          </div>
+
+          <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+
+          <div class="progress-stats-row">
+            <span id="progress-downloaded">0.0 MB / 0.0 MB</span>
+            <span id="progress-speed">0.0 MB/s</span>
+            <span id="progress-eta">Restante: --:--</span>
+          </div>
+
+          <!-- Ações pós-download -->
+          <div class="progress-action-btns hidden" id="download-completed-actions">
+            <button type="button" class="btn-progress-action" id="btn-play-file">
+              <span class="material-symbols-rounded ms-xs">play_arrow</span>
+              <span>Abrir Arquivo</span>
+            </button>
+            <button type="button" class="btn-progress-action" id="btn-view-in-folder">
+              <span class="material-symbols-rounded ms-xs">folder_open</span>
+              <span>Mostrar na Pasta</span>
+            </button>
+          </div>
+        </div>
+      </main>
+
+      <!-- 4. HISTÓRICO DE DOWNLOADS -->
+      <section class="history-section">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="material-symbols-rounded ms-sm">history</span>
+            <span>Downloads Recentes</span>
+          </div>
+          <button type="button" class="btn-clear-history" id="btn-clear-history" title="Limpar histórico">
+            Limpar Histórico
+          </button>
+        </div>
+
+        <div class="history-grid" id="history-list">
+          <!-- Itens injetados via JavaScript -->
+          <div class="empty-state" style="padding: 24px; font-size: 13px; color: var(--text-subtle);">
+            Nenhum download registrado ainda.
+          </div>
+        </div>
+      </section>
+
+      <!-- MODAL DE ATUALIZAÇÃO AUTOMÁTICA (IDV LUKE-SHARE) -->
+      <div id="update-modal" class="modal-backdrop hidden">
+        <div class="modal-card">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <span class="material-symbols-rounded modal-lead-icon">system_update_alt</span>
+              <h3>Atualização do Luke-Grabber</h3>
+            </div>
+            <button id="btn-close-update-modal" class="btn-icon-ghost" title="Fechar">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="update-version-row">
+              <div class="version-box">
+                <span class="version-label">Versão Atual</span>
+                <span class="version-val current" id="update-curr-version">v1.1.0</span>
+              </div>
+              <span class="material-symbols-rounded version-arrow">arrow_forward</span>
+              <div class="version-box">
+                <span class="version-label">Nova Versão</span>
+                <span class="version-val new" id="update-new-version">v1.1.0</span>
+              </div>
+            </div>
+
+            <div class="update-notes-box">
+              <span class="notes-title">O que há de novo:</span>
+              <div class="notes-content" id="update-notes">Carregando notas da versão...</div>
+            </div>
+
+            <!-- Opção de Atualização do Motor yt-dlp -->
+            <div class="engine-update-box">
+              <div class="engine-info-row">
+                <div class="engine-text-group">
+                  <span class="engine-title">Motor de Download Local (yt-dlp)</span>
+                  <span class="engine-sub" id="engine-version-sub">Versão: yt-dlp carregado</span>
+                </div>
+                <button type="button" id="btn-update-engine" class="btn-secondary btn-xs" title="Atualiza o motor interno para suportar novas mudanças nas plataformas">
+                  <span class="material-symbols-rounded ms-xs">refresh</span>
+                  <span>Atualizar Motor</span>
+                </button>
+              </div>
+            </div>
+
+            <div id="update-progress-container" class="update-progress-container hidden">
+              <div class="update-status-row">
+                <span id="update-status-text">Baixando atualização...</span>
+                <span id="update-progress-text">0%</span>
+              </div>
+              <div class="progress-bar-bg">
+                <div id="update-progress-bar" class="progress-bar-fill" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer" id="update-action-buttons">
+            <button
+              id="btn-close-update-modal-secondary"
+              class="btn-secondary btn-sm"
+            >
+              Depois
+            </button>
+            <button id="btn-start-update" class="btn-primary btn-sm">
+              <span class="material-symbols-rounded ms-sm">bolt</span>
+              <span>Atualizar e Reiniciar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODAL DE AJUDA: COMO BAIXAR STATUS DO WHATSAPP -->
+      <div id="whatsapp-modal" class="modal-backdrop hidden">
+        <div class="modal-card modal-card-wide">
+          <div class="modal-header">
+            <div class="modal-title-group">
+              <span class="material-symbols-rounded modal-lead-icon" style="color: #4ade80;">forum</span>
+              <h3>Como Baixar Status do WhatsApp (HD)</h3>
+            </div>
+            <button id="btn-close-whatsapp-modal" class="btn-icon-ghost" title="Fechar">
+              <span class="material-symbols-rounded">close</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="wa-notice-box">
+              <span class="material-symbols-rounded ms-md" style="color: #4ade80;">lock</span>
+              <div class="wa-notice-text">
+                <strong>Por que o WhatsApp não possui link comum?</strong>
+                <p>O WhatsApp utiliza criptografia de ponta a ponta privada (Signal Protocol). Não existem links públicos na internet para status. O vídeo/foto fica decodificado apenas dentro da sua própria sessão no celular ou WhatsApp Web.</p>
+              </div>
+            </div>
+
+            <div class="wa-methods-container">
+              <h4 class="wa-method-heading">⚡ Método 1: Favorito "Luke-Status" no WhatsApp Web (1 Clique)</h4>
+              <p class="wa-method-desc">
+                No seu navegador no PC (Edge, Chrome, Brave ou Firefox), abra o <strong>WhatsApp Web</strong>. Sempre que estiver visualizando um status, basta clicar neste Favorito e o vídeo ou foto será baixado imediatamente no seu computador em qualidade original:
+              </p>
+
+              <div class="bookmarklet-box">
+                <div class="bookmarklet-code" id="wa-bookmarklet-code">
+javascript:(function(){const v=document.querySelector('div[role="dialog"] video, div[role="dialog"] img');if(v){const src=v.src||v.querySelector('source')?.src;if(src){const a=document.createElement('a');a.href=src;a.download='whatsapp-status-'+Date.now()+(v.tagName==='VIDEO'?'.mp4':'.jpg');document.body.appendChild(a);a.click();a.remove();}else{alert('Abra um status primeiro para baixar!');}}else{alert('Abra um status no WhatsApp Web antes de clicar!');}})();
+                </div>
+                <button type="button" id="btn-copy-bookmarklet" class="btn-primary btn-sm">
+                  <span class="material-symbols-rounded ms-xs">content_copy</span>
+                  <span>Copiar Código do Favorito</span>
+                </button>
+              </div>
+
+              <h4 class="wa-method-heading" style="margin-top: 16px;">📁 Método 2: Pasta Oculta de Status (Android)</h4>
+              <p class="wa-method-desc">
+                No Android, todos os status que você assiste ficam temporariamente salvos na pasta interna:  
+                <code>/Android/media/com.whatsapp/WhatsApp/Media/.Statuses</code> (habilite "Mostrar arquivos ocultos" no gerenciador de arquivos).
+              </p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button id="btn-close-wa-footer" class="btn-secondary btn-sm">
+              Entendido
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contêiner de Toasts / Notificações -->
+      <div class="toast-container" id="toast-container"></div>
+    </div>
+
+    <style>
+      @keyframes spin {
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+    <script src="app.js"></script>
+  </body>
+</html>

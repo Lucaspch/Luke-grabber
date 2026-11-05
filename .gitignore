@@ -1,0 +1,34 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller / Build outputs
+build/
+dist/
+release/
+*.spec.bak
+
+# Large binary dependencies (Use scripts/download-ffmpeg.ps1 to fetch)
+bin/*.exe
+bin/*.dll
+bin/*.zip
+
+# User data & local history
+history.json
+*.log
+
+# Environments & IDEs
+.env
+.venv
+env/
+venv/
+ENV/
+.vscode/
+.idea/
+
+# Windows desktop artifacts
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
