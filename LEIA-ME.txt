@@ -1,6 +1,6 @@
 ==============================================================================
 LUKE-GRABBER ⚡ — EXTRATOR & ARQUIVADOR MULTIMÍDIA UNIVERSAL
-Versão: 1.1.0
+Versão: 1.1.1
 Identidade Visual: Ecossistema Luke (Midnight Ocean & Electric Cyan)
 ==============================================================================
 

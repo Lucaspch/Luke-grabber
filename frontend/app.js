@@ -1,7 +1,7 @@
 /**
  * Luke-Grabber — Script Frontend
  * Identidade Visual e Experiência inspiradas no Luke-Share (Midnight Ocean & Electric Cyan)
- * Versão: 1.1.0
+ * Versão: 1.1.1
  */
 
 // Estado da Aplicação

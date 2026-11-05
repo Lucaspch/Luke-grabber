@@ -34,7 +34,7 @@ if not BIN_DIR.exists() and (EXE_DIR / "bin").exists():
     BIN_DIR = EXE_DIR / "bin"
 
 HISTORY_FILE = EXE_DIR / "history.json"
-APP_VERSION = "1.1.0"
+APP_VERSION = "1.1.1"
 GITHUB_REPO = "Lucaspch/Luke-grabber"
 
 # Garante que o FFmpeg local de bin/ seja prioridade no PATH
@@ -42,6 +42,54 @@ os.environ["PATH"] = str(BIN_DIR) + os.pathsep + os.environ.get("PATH", "")
 
 # Importa yt_dlp
 import yt_dlp
+import yt_dlp.extractor.instagram as ig
+
+# -----------------------------------------------------------------------------
+# PATCH DO EXTRATOR DO INSTAGRAM NO YT-DLP
+# -----------------------------------------------------------------------------
+# Por padrão, o yt-dlp lança 'There is no video in this post' para posts de foto.
+# Este patch injeta as fotos do post em 'formats' para que o yt-dlp retorne todas
+# as resoluções originais e metadados com sucesso.
+try:
+    _orig_extract_product_media = ig.InstagramIE._extract_product_media
+    def _patched_extract_product_media(self, product_media):
+        res = _orig_extract_product_media(self, product_media)
+        if not res.get("formats") and res.get("thumbnails"):
+            res["formats"] = []
+            for idx, t in enumerate(res["thumbnails"]):
+                if t.get("url"):
+                    res["formats"].append({
+                        "format_id": f"img_{idx}",
+                        "url": t["url"],
+                        "ext": "jpg",
+                        "vcodec": "none",
+                        "acodec": "none",
+                        "width": t.get("width"),
+                        "height": t.get("height"),
+                    })
+        return res
+    ig.InstagramIE._extract_product_media = _patched_extract_product_media
+
+    _orig_extract_product = ig.InstagramIE._extract_product
+    def _patched_extract_product(self, product_info, video_id=None, get_comments=True):
+        res = _orig_extract_product(self, product_info, video_id=video_id, get_comments=get_comments)
+        if not res.get("formats") and res.get("thumbnails"):
+            res["formats"] = []
+            for idx, t in enumerate(res["thumbnails"]):
+                if t.get("url"):
+                    res["formats"].append({
+                        "format_id": f"img_{idx}",
+                        "url": t["url"],
+                        "ext": "jpg",
+                        "vcodec": "none",
+                        "acodec": "none",
+                        "width": t.get("width"),
+                        "height": t.get("height"),
+                    })
+        return res
+    ig.InstagramIE._extract_product = _patched_extract_product
+except Exception as _patch_err:
+    print(f"Aviso ao aplicar patch do Instagram: {_patch_err}")
 
 # Importa Bottle (WSGI micro-framework leve)
 from bottle import Bottle, request, response, static_file, run
@@ -198,6 +246,7 @@ def get_info():
             "no_warnings": True,
             "skip_download": True,
             "extract_flat": False,
+            "format": "all",
             "ffmpeg_location": str(BIN_DIR),
             "http_headers": {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
@@ -395,6 +444,7 @@ def run_download_thread(params):
                 "quiet": True,
                 "no_warnings": True,
                 "skip_download": True,
+                "format": "all",
                 "ffmpeg_location": str(BIN_DIR),
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -441,6 +491,7 @@ def run_download_thread(params):
                 "quiet": True,
                 "no_warnings": True,
                 "skip_download": True,
+                "format": "all",
                 "ffmpeg_location": str(BIN_DIR),
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -718,7 +769,7 @@ def check_updates():
                     "available": False,
                     "current_version": APP_VERSION,
                     "latest_version": APP_VERSION,
-                    "message": "Você está na versão mais recente (v1.1.0).",
+                    "message": f"Você está na versão mais recente (v{APP_VERSION}).",
                     "engine_version": yt_dlp.version.__version__
                 })
             raise

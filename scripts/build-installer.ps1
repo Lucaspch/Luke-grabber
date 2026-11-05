@@ -29,7 +29,7 @@ Write-Host "  -> Binário standalone compilado em 'dist\Luke-Grabber'." -Foregro
 
 # 3. Gerando Pacote Portátil (.ZIP)
 Write-Host "`n[3/4] Gerando pacote portátil (.zip)..." -ForegroundColor White
-$zipPath = "release\Luke-Grabber_v1.1.0_Portable.zip"
+$zipPath = "release\Luke-Grabber_v1.1.1_Portable.zip"
 if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
 Compress-Archive -Path "dist\Luke-Grabber\*" -DestinationPath $zipPath -CompressionLevel Optimal
 $zipSizeMB = [math]::Round((Get-Item $zipPath).Length / 1MB, 2)
@@ -53,7 +53,7 @@ foreach ($path in $isccCandidates) {
 
 if ($isccPath) {
     & "$isccPath" "luke-grabber.iss"
-    $setupExe = "release\Luke-Grabber_Setup_v1.1.0.exe"
+    $setupExe = "release\Luke-Grabber_Setup_v1.1.1.exe"
     if (Test-Path $setupExe) {
         $setupSizeMB = [math]::Round((Get-Item $setupExe).Length / 1MB, 2)
         Write-Host "  -> Instalador gerado com sucesso: $setupExe ($setupSizeMB MB)" -ForegroundColor Green

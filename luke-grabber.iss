@@ -2,7 +2,7 @@
 ; Autor: Antigravity para Lucas
 
 #define MyAppName "Luke-Grabber"
-#define MyAppVersion "1.1.0"
+#define MyAppVersion "1.1.1"
 #define MyAppPublisher "Luke"
 #define MyAppExeName "Luke-Grabber.exe"
 
@@ -17,6 +17,7 @@ AllowNoIcons=yes
 OutputDir=release
 OutputBaseFilename=Luke-Grabber_Setup_v{#MyAppVersion}
 SetupIconFile=frontend\app-icon.ico
+UninstallDisplayIcon={app}\app-icon.ico
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
@@ -33,11 +34,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "dist\Luke-Grabber\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "frontend\app-icon.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "frontend\app-icon.ico"; DestDir: "{app}\frontend"; Flags: ignoreversion
+Source: "frontend\app-icon.png"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\frontend\app-icon.ico"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\app-icon.ico"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\frontend\app-icon.ico"; Tasks: desktopicon
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\app-icon.ico"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

@@ -6,6 +6,8 @@ block_cipher = None
 datas = [
     ('frontend', 'frontend'),
     ('bin', 'bin'),
+    ('frontend/app-icon.ico', '.'),
+    ('frontend/app-icon.png', '.'),
 ]
 datas += collect_data_files('yt_dlp')
 
