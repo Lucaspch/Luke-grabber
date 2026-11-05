@@ -36,21 +36,4 @@
 
 ---
 
-## ⚖️ Aviso Legal e Isenção de Responsabilidade (Legal Disclaimer)
-
-> **LEIA COM ATENÇÃO ANTES DE UTILIZAR O SOFTWARE**
-
-1. **Finalidade Educacional, Pesquisa e Backup Pessoal:**  
-   Este software é disponibilizado como uma ferramenta estritamente utilitária e educacional, destinada à pesquisa acadêmica sobre arquiteturas de rede e ao arquivamento de cópias de segurança pessoal (backup privado) de conteúdos próprios ou de domínio público. Nos termos da legislação brasileira de direitos autorais (**Lei Federal nº 9.610/1998, art. 46, inciso II**), a cópia de obra para uso privado e exclusivo do copista, sem intuito de lucro direto ou indireto, constitui limitação legítima aos direitos autorais.
-
-2. **Inexistência de Quebra de Proteção Tecnológica (Sem Evasão de DRM):**  
-   O Luke-Grabber **não possui** e **não executa** nenhuma forma de contorno, quebra de criptografia, engenharia reversa de segurança ou desativação de sistemas de Gestão de Direitos Digitais (DRM), tais como Widevine, FairPlay ou PlayReady. A ferramenta limita-se a requisitar e salvar fluxos e arquivos transmitidos de maneira aberta e desprotegida através de protocolos públicos padronizados na internet (HTTP, HLS, DASH, MP4, WebM).
-
-3. **Interoperabilidade e Direitos Marcários:**  
-   Este projeto é de autoria independente e não possui qualquer tipo de vínculo, associação comercial, patrocínio, licenciamento ou endosso de nenhuma corporação ou operadora de serviços web. Eventuais referências a marcas comerciais ou provedores de serviço no código-fonte, interface ou documentação possuem caráter estritamente descritivo de compatibilidade de protocolos e interoperabilidade técnica, em conformidade com o **artigo 132, inciso IV da Lei Federal nº 9.279/1996 (Lei da Propriedade Industrial)**.
-
-4. **Responsabilidade Exclusiva do Usuário Final:**  
-   O desenvolvedor e os colaboradores deste software não endossam a reprodução desautorizada de propriedade intelectual nem se responsabilizam por quaisquer utilizações que violem legislações locais ou os Termos de Serviço de plataformas de terceiros. A utilização da ferramenta dá-se sob a inteira e exclusiva responsabilidade jurídica do usuário.
-
-5. **Isenção de Servidores / Zero Intermediação:**  
-   O projeto não opera nenhum servidor web, servidor de relay ou infraestrutura de nuvem intermediária. O código é executado localmente de ponta a ponta na máquina do usuário.
+**Finalidade Educacional, Pesquisa e Backup Pessoal:**  
